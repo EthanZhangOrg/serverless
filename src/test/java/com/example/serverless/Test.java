@@ -7,15 +7,13 @@ import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
-import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.*;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class Test {
 
@@ -63,8 +61,8 @@ public class Test {
 //                    }
 //                })
 //                .build();
-//
-//
+
+
 //        Map<String, AttributeValue> dynamoDBKey = new HashMap<>();
 //        dynamoDBKey.put("user_email", AttributeValue.builder().s("ethanzhang1997+prod@gmail.com").build());
 //
@@ -72,8 +70,20 @@ public class Test {
 //                .key(dynamoDBKey)
 //                .tableName("User-Tokens")
 //                .build();
+
+//        GetItemResponse item = client.getItem(new Consumer<GetItemRequest.Builder>() {
+//            @Override
+//            public void accept(GetItemRequest.Builder builder) {
+//                builder.tableName("User-Tokens");
 //
-//        GetItemResponse item = client.getItem(request);
+//                Map<String, AttributeValue> map = new HashMap<>();
+//                map.put("user_email", AttributeValue.builder().s("ethanzhang1997+prod@gmail.com").build());
+//
+//                builder.key(map);
+//
+//                builder.
+//            }
+//        });
 //        Boolean used = item.item().get("used").bool();
 //        System.out.println(used);
     }
