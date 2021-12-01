@@ -1,9 +1,6 @@
 name: Build & Deploy WebApp
 
 env:
-  ARTIFACT_NAME: csye6225-webapp-${{ github.sha }}.zip
-  CODEDEPLOY_APPLICATION_NAME: csye6225-webapp
-  CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: csye6225-webapp-deployment
   AWS_REGION: us-east-1
 
 on:
@@ -30,23 +27,6 @@ jobs:
         pwd
         cd target
         ls -al
-
-    - name: Build Deployment Artifact
-      run: |
-        mkdir codedeploy_artifact
-        zip -r ${{ env.ARTIFACT_NAME }} ./target/webapp-0.0.1-SNAPSHOT.jar codedeploy/*.sh appspec.yml cloudwatch-config.json
-        pwd
-        ls -al
-        mv ${{ env.ARTIFACT_NAME }} codedeploy_artifact/
-        ls -al
-        pwd
-        cd codedeploy_artifact
-        pwd
-        ls -al
-        cd ..
-        pwd
-        ls -al
-        
         
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -57,23 +37,9 @@ jobs:
 
     - name: Copy Artifact to S3
       run: |
-        aws s3 sync ./codedeploy_artifact s3://${{ secrets.S3_CODEDEPLOY_BUCKET_PROD }}
+        aws s3 sync ./target/serverless-0.0.1-SNAPSHOT.jar s3://${{ secrets.S3_LAMBDA_BUCKET_PROD }}
 
-    - name: Codedeploy API Call
+    - name: deploy
       run: |
-        output=$(aws deploy create-deployment  \
-          --application-name ${{ env.CODEDEPLOY_APPLICATION_NAME }} \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name ${{ env.CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME }} \
-          --description "CSYE6225 - CodeDeploy" \
-          --s3-location bucket=${{ secrets.S3_CODEDEPLOY_BUCKET_PROD }},key=${{ env.ARTIFACT_NAME }},bundleType=zip \
-          --region ${{ env.AWS_REGION }} \
-          --ignore-application-stop-failures \
-          --output json)
-
-        echo $output
-
-        dId=$(echo $output | jq -r '.deploymentId')
-
-        aws deploy wait deployment-successful --deployment-id $dId
+        aws lambda update-function-code --function-name=send_email --s3-bucket=prod.lambda --s3-key=serverless-0.0.1-SNAPSHOT.jar -- --region ${{ env.AWS_REGION }}
         
