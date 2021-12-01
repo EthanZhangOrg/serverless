@@ -6,9 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValueUpdate;
-import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.*;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -29,18 +27,22 @@ public class EmailSender implements RequestHandler<SNSEvent, Object> {
         JSONObject jsonstr = JSON.parseObject(record);
         String emailAddress = jsonstr.getString("email");
         String token = jsonstr.getString("token");
-//        Boolean used = jsonstr.getBoolean("used");
 
-//        logger.info("jsonStr: " + jsonstr);
-//
-//        logger.info("emailAddress: " + emailAddress);
-//        logger.info("token: " + token);
-//        logger.info("used: " + used);
-//
-//        if (used == null || used) {
-//            logger.info("used is null or it has been used!");
-//            return null;
-//        }
+        Map<String, AttributeValue> dynamoDBKey = new HashMap<>();
+        dynamoDBKey.put("user_email", AttributeValue.builder().s(emailAddress).build());
+
+        GetItemRequest request = GetItemRequest.builder()
+                .key(dynamoDBKey)
+                .tableName("User-Tokens")
+                .build();
+
+        GetItemResponse itemResponse = DynamoDBClientFactory.getClient().getItem(request);
+        Boolean used = itemResponse.item().get("used").bool();
+
+        if (used == null || used) {
+            logger.info("used is null or it has been used!");
+            return null;
+        }
 
         String body = "Please verify your email with this link: " +
                 "http://prod.ethanzhang1997.me/v1/verifyUserEmail?email=" + emailAddress + "&token=" + token;

@@ -1,11 +1,20 @@
 package com.example.serverless;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
+import com.sun.mail.imap.protocol.Item;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
@@ -48,5 +57,28 @@ public class Test {
 //        };
 //        Session session = Session.getInstance(props, auth);
 //        EmailSender.sendEmail(session, emailAddress, "Verify your email!", body);
+
+//        DynamoDbClient client = DynamoDbClient.builder()
+//                .region(Region.US_EAST_1)
+//                .credentialsProvider(new AwsCredentialsProvider() {
+//                    @Override
+//                    public AwsCredentials resolveCredentials() {
+//                        return AwsBasicCredentials.create("AKIAQSRZMGLTK7Z5WCNH", "OuIg/6wbo263kJeULY9Lfjb2JWP1xnM6nDaJ7GtB");
+//                    }
+//                })
+//                .build();
+//
+//
+//        Map<String, AttributeValue> dynamoDBKey = new HashMap<>();
+//        dynamoDBKey.put("user_email", AttributeValue.builder().s("ethanzhang1997+prod@gmail.com").build());
+//
+//        GetItemRequest request = GetItemRequest.builder()
+//                .key(dynamoDBKey)
+//                .tableName("User-Tokens")
+//                .build();
+//
+//        GetItemResponse item = client.getItem(request);
+//        Boolean used = item.item().get("used").bool();
+//        System.out.println(used);
     }
 }
