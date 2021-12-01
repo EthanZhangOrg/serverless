@@ -1,2 +1,3 @@
 # serverless
-repo for assignment7
+serverless for assignment7
+This lambda function will send email to newly created users
