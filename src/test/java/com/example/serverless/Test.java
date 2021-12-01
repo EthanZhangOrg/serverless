@@ -1,9 +1,5 @@
 package com.example.serverless;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
 import com.sun.mail.imap.protocol.Item;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
