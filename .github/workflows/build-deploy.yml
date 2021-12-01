@@ -29,7 +29,7 @@ jobs:
         cd target
         ls -al
         cd ..
-        mv ./target/serverless-0.0.1-SNAPSHOT.jar ./lambda_package/serverless-1.jar
+        mv ./target/serverless-0.0.1-SNAPSHOT.jar ./lambda_package/serverless-2.jar
         
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -44,5 +44,5 @@ jobs:
 
     - name: deploy
       run: |
-        aws lambda update-function-code --function-name=send_email --s3-bucket=prod.lambda --s3-key=serverless-1.jar -- --region ${{ env.AWS_REGION }}
+        aws lambda update-function-code --function-name=send_email --s3-bucket=prod.lambda --s3-key=serverless-2.jar
         
