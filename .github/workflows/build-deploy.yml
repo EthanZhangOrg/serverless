@@ -27,6 +27,7 @@ jobs:
         pwd
         cd target
         ls -al
+        mv serverless-0.0.1-SNAPSHOT.jar serverless-1.jar
         
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -37,9 +38,9 @@ jobs:
 
     - name: Copy Artifact to S3
       run: |
-        aws s3 sync ./target/serverless-0.0.1-SNAPSHOT.jar s3://${{ secrets.S3_LAMBDA_BUCKET_PROD }}
+        aws s3 sync ./target/serverless-1.jar s3://${{ secrets.S3_LAMBDA_BUCKET_PROD }}
 
     - name: deploy
       run: |
-        aws lambda update-function-code --function-name=send_email --s3-bucket=prod.lambda --s3-key=serverless-0.0.1-SNAPSHOT.jar -- --region ${{ env.AWS_REGION }}
+        aws lambda update-function-code --function-name=send_email --s3-bucket=prod.lambda --s3-key=serverless-1.jar -- --region ${{ env.AWS_REGION }}
         
