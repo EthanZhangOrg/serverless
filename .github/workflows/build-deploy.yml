@@ -44,5 +44,5 @@ jobs:
 
     - name: deploy
       run: |
-        aws lambda update-function-code --function-name=send_email --s3-bucket=prod.lambda --s3-key=serverless-1.jar -- --region ${{ env.AWS_REGION }}
+        aws lambda update-function-code --function-name=send_email --s3-bucket=prod.lambda --s3-key=serverless-1.jar
         
