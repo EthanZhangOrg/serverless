@@ -45,7 +45,7 @@ public class EmailSender implements RequestHandler<SNSEvent, Object> {
         }
 
         String body = "Please verify your email with this link: " +
-                "http://prod.ethanzhang1997.me/v1/verifyUserEmail?email=" + emailAddress + "&token=" + token;
+                "https://prod.ethanzhang1997.me/v1/verifyUserEmail?email=" + emailAddress + "&token=" + token;
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "email-smtp.us-east-1.amazonaws.com"); //SMTP Host
